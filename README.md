@@ -1,2 +1,2 @@
 # lists
-An alternative implementation of Go list using array
+An alternative implementation of Go list using []string
