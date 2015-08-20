@@ -177,6 +177,27 @@ func TestIsOutOfBound(t *testing.T) {
 
 }
 
+func TestGet(t *testing.T) {
+
+    hamlet := ParseArray(QuoteSlc," ")
+    hamlet.MoveTo(2)
+
+    if hamlet.Get() != "or" {
+        t.Errorf("Get failed.")
+    }
+
+}
+
+func TestGetAt(t *testing.T) {
+
+    hamlet := ParseArray(QuoteSlc," ")
+
+    if value, _ := hamlet.GetAt(2); value != "or" {
+        t.Errorf("GetAt failed.")
+    }
+
+}
+
 func TestDedup(t *testing.T) {
 
     hamlet := ParseArray(QuoteSlc," ")
