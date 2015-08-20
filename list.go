@@ -189,13 +189,6 @@ func (list *List) Delete() error {
 }
 
 /**
- ** Delete the last element.
- **/
-func (list *List) DeleteLast() error {
-    return list.DeleteAt(list.Len()-1)
-}
-
-/**
  ** Returns list with element deleted at the specified position.
  **/
 func (list *List) DeleteAt(position int) error {
@@ -216,6 +209,18 @@ func (list *List) DeleteAt(position int) error {
 func (list *List) DeleteFirst(element string) {
     if i := list.Find(element); i > -1 {
         list.DeleteAt(i)
+    }
+}
+
+/**
+** Delete last occurrence of the given element.
+ **/
+func (list *List) DeleteLast(element string) {
+    for i := list.Len()-1; i >= 0; i-- {
+        if value, _ := list.GetAt(i); value == element {
+            list.DeleteAt(i)
+            return
+        }
     }
 }
 
@@ -396,9 +401,11 @@ func (list *List) Count(element string) (count int) {
  ** Delete duplicate elements in the list.
  **/
 func (list *List) Dedup() {
-    for i, value := range list.Values {
+
+     for _, value := range list.Values {
         if count := list.Count(value); count > 1 {
-            list.DeleteAt(i)
-        }
+            list.DeleteLast(value)
+       }
     }
+
 }
