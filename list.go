@@ -2,6 +2,7 @@ package lists
 
 import (
 	"errors"
+	"fmt"
 	"sort"
 	"strings"
 )
@@ -248,7 +249,7 @@ func (list *List) DeleteAll(elements ...string) {
  **/
 func (list *List) Filter(elements ...string) {
 
-	filtered := []string{}
+	var filtered []string
 
 	for _, value := range list.Values {
 		for _, e := range elements {
@@ -412,10 +413,19 @@ func (list *List) Count(element string) (count int) {
  ** Delete duplicate elements in the list.
  **/
 func (list *List) Dedup() {
-	for i:=list.Len()-1; i>=0; i-- {
+	for i := list.Len() - 1; i >= 0; i-- {
 		value, _ := list.GetAt(i)
 		if count := list.Count(value); count > 1 {
 			list.DeleteLast(value)
 		}
+	}
+}
+
+/**
+ ** Quote every element in the list.
+ **/
+func (list *List) Quote(r rune) {
+	for i := range list.Values {
+		list.Values[i] = fmt.Sprintf("%s%s%s", string(r), list.Values[i], string(r))
 	}
 }

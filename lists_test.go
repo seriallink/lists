@@ -208,3 +208,14 @@ func TestDedup(t *testing.T) {
 	}
 
 }
+
+func TestQuote(t *testing.T) {
+
+	hamlet := ParseArray(QuoteSlc, " ")
+	hamlet.Quote('\'')
+
+	if hamlet.ToString() != "'to' 'be' 'or' 'not' 'to' 'be'" {
+		t.Errorf("Quote has failed.")
+	}
+
+}
