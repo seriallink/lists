@@ -348,10 +348,8 @@ func (list *List) Shift(from, to int) {
  **/
 func (list *List) Split(position int, interval ...int) {
 
-	var (
-		elements = make([]string, len(interval))
-		from     = 0
-	)
+	from := 0
+	elements := make([]string, len(interval))
 
 	for i := 0; i < len(interval); i++ {
 		elements[i] = list.Values[position][from:interval[i]]
@@ -427,5 +425,16 @@ func (list *List) Dedup() {
 func (list *List) Quote(r rune) {
 	for i := range list.Values {
 		list.Values[i] = fmt.Sprintf("%s%s%s", string(r), list.Values[i], string(r))
+	}
+}
+
+/**
+ ** Append a new value to the list only if the new element does not exist.
+ **/
+func (list *List) AppendNew(values ...string) {
+	for _, value := range values {
+		if !list.Exist(value) {
+			list.Values = append(list.Values, value)
+		}
 	}
 }
