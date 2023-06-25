@@ -15,16 +15,12 @@ type List struct {
 
 var OutOfBounds = errors.New("index out of bounds")
 
-/**
- ** Returns a new List.
- **/
+// ParseArray returns a new List.
 func ParseArray(values []string, separator string) (list List) {
 	return List{values, separator, -1}
 }
 
-/**
- ** Parse string to a new List.
- **/
+// ParseString parses string to a new List.
 func ParseString(values string, separator string) (list List) {
 	list.Values = strings.Split(values, separator)
 	list.Separator = separator
@@ -32,9 +28,7 @@ func ParseString(values string, separator string) (list List) {
 	return
 }
 
-/**
- ** Returns the list as string.
- **/
+// ToString returns the list as string.
 func (list *List) ToString() (tostr string) {
 
 	for i, l := range list.Values {
@@ -49,40 +43,30 @@ func (list *List) ToString() (tostr string) {
 	return
 }
 
-/**
- ** Returns the list as array.
- **/
+// ToArray returns the list as array.
 func (list *List) ToArray() []string {
 	return list.Values
 }
 
-/**
- ** Returns the number of elements in the list.
- **/
+// Len returns the number of elements in the list.
 func (list *List) Len() int {
 	return len(list.Values)
 }
 
-/**
- ** Returns the element at the first position.
- **/
+// First returns the element at the first position.
 func (list *List) First() string {
 	list.Index = 0
 	return list.Values[list.Index]
 }
 
-/**
- ** Returns the element at the last position.
- **/
+// Last returns the element at the last position.
 func (list *List) Last() string {
 	list.Index = list.Len() - 1
 	return list.Values[list.Index]
 }
 
-/**
- ** Returns the index of the first occurrence of a value within a list.
- ** Returns -1 if no value is found. The search is case-sensitive.
- **/
+// Find returns the index of the first occurrence of a value within a list or returns -1 if no value is found.
+// The search is case-sensitive.
 func (list *List) Find(value string) int {
 
 	for i, v := range list.Values {
@@ -94,24 +78,18 @@ func (list *List) Find(value string) int {
 	return -1
 }
 
-/**
- ** Returns true or false when a value is or not found.
- **/
+// Exist returns true or false when a value is or not found.
 func (list *List) Exist(value string) bool {
 	return list.Find(value) > -1
 }
 
-/**
- ** Check if there more elements to move forward
- **/
-func (list *List) HasNext() bool {
+// Exist checks if there are more elements to move forward
+func (list *List) c() bool {
 	i := list.Len() - list.Index
 	return i > 1
 }
 
-/**
- ** Returns next element.
- **/
+// Next returns the next element.
 func (list *List) Next() (string, error) {
 
 	// check index position
@@ -129,9 +107,7 @@ func (list *List) Next() (string, error) {
 	return value, nil
 }
 
-/**
- ** Move index to given position
- **/
+// MoveTo moves the index to a given position.
 func (list *List) MoveTo(index int) error {
 
 	// check list size
@@ -145,37 +121,27 @@ func (list *List) MoveTo(index int) error {
 	return nil
 }
 
-/**
- ** Move index to before first
- **/
+// Rewind moves the index before the first element.
 func (list *List) Rewind() {
 	list.Index = -1
 }
 
-/**
- ** Returns true if list has no element.
- **/
+// IsEmpty returns true if list has no element.
 func (list *List) IsEmpty() bool {
 	return list.Len() == 0
 }
 
-/**
- ** Returns true if index is out of bound.
- **/
+// IsOutOfBound returns true if index is out of bound.
 func (list *List) IsOutOfBound(index int) bool {
 	return index >= list.Len()
 }
 
-/**
- ** Returns the element based on index.
- **/
+// Get returns the element at the current position.
 func (list *List) Get() string {
 	return list.Values[list.Index]
 }
 
-/**
- ** Returns the element at a given position.
- **/
+// GetAt returns the element at the specified position.
 func (list *List) GetAt(position int) (string, error) {
 
 	// check list size
@@ -187,16 +153,12 @@ func (list *List) GetAt(position int) (string, error) {
 	return list.Values[position], nil
 }
 
-/**
- ** Delete the element based on index.
- **/
+// Delete removes the element at the current position.
 func (list *List) Delete() error {
 	return list.DeleteAt(list.Index)
 }
 
-/**
- ** Returns list with element deleted at the specified position.
- **/
+// DeleteAt returns list with element deleted at the specified position.
 func (list *List) DeleteAt(position int) error {
 
 	// check list size
@@ -211,18 +173,14 @@ func (list *List) DeleteAt(position int) error {
 	return nil
 }
 
-/**
- ** Delete first occurrence of the given element.
- **/
+// DeleteFirst removes the first occurrence of the given element.
 func (list *List) DeleteFirst(element string) {
 	if i := list.Find(element); i > -1 {
 		list.DeleteAt(i)
 	}
 }
 
-/**
-** Delete last occurrence of the given element.
- **/
+// DeleteLast removes the last occurrence of the given element.
 func (list *List) DeleteLast(element string) {
 	for i := list.Len() - 1; i >= 0; i-- {
 		if value, _ := list.GetAt(i); value == element {
@@ -232,9 +190,7 @@ func (list *List) DeleteLast(element string) {
 	}
 }
 
-/**
- ** Delete elements in the list.
- **/
+// DeleteAll removes matching elements.
 func (list *List) DeleteAll(elements ...string) {
 	for _, e := range elements {
 		if i := list.Find(e); i > -1 {
@@ -244,9 +200,7 @@ func (list *List) DeleteAll(elements ...string) {
 	}
 }
 
-/**
- ** Filter list.
- **/
+// Filter returns a new list with elements that match the given elements.
 func (list *List) Filter(elements ...string) {
 
 	var filtered []string
@@ -262,44 +216,32 @@ func (list *List) Filter(elements ...string) {
 	list.Values = filtered
 }
 
-/**
- ** Returns the subset of a list.
- **/
+// Range returns the subset of a list.
 func (list *List) Range(start, end int) List {
 	return ParseArray(list.Values[start:end], list.Separator)
 }
 
-/**
- ** Returns the subset of a list from an index until the end.
- **/
+// From returns the subset of a list from an index until the end.
 func (list *List) From(start int) List {
 	return ParseArray(list.Values[start:], list.Separator)
 }
 
-/**
- ** Returns the subset of a list from its beginning until the given position.
- **/
+// Until returns the subset of a list from its beginning until the given position.
 func (list *List) Until(end int) List {
 	return ParseArray(list.Values[:end], list.Separator)
 }
 
-/**
- ** Set a new value assigned to its element based on index.
- **/
+// Set sets a new value assigned to its element based on current index.
 func (list *List) Set(value string) {
 	list.Values[list.Index] = value
 }
 
-/**
- ** Set a new value assigned to last element.
- **/
+// SetLast sets a new value assigned to the last element.
 func (list *List) SetLast(value string) {
 	list.Values[list.Len()-1] = value
 }
 
-/**
- ** Set a new value assigned to its element at specified position.
- **/
+// SetAt sets a new value assigned to its element based on a given position.
 func (list *List) SetAt(position int, value string) error {
 
 	// check list size
@@ -313,39 +255,29 @@ func (list *List) SetAt(position int, value string) error {
 	return nil
 }
 
-/**
- ** Append a new value to the list.
- **/
+// Append adds values to the end of the list.
 func (list *List) Append(values ...string) {
 	for _, value := range values {
 		list.Values = append(list.Values, value)
 	}
 }
 
-/**
- ** Insert a new element to the list at a specified position.
- **/
+// Insert adds a new element to the list at a specified position.
 func (list *List) Insert(position int, value string) {
 	list.Values = append(list.Values[:position], append([]string{value}, list.Values[position:]...)...)
 }
 
-/**
- ** Swap elements in the list
- **/
+// Swap swaps the position of two elements.
 func (list *List) Swap(x, y int) {
 	list.Values[x], list.Values[y] = list.Values[y], list.Values[x]
 }
 
-/**
- ** Shift a element in the list
- **/
+// Shift moves an element from a position to another.
 func (list *List) Shift(from, to int) {
 	list.Values = append(list.Values[:from], append(list.Values[from+1:to], append(list.Values[from:from+1], list.Values[to:]...)...)...)
 }
 
-/**
- ** Split a element in 'n' new elements
- **/
+// Split splits a element in 'n' new elements
 func (list *List) Split(position int, interval ...int) {
 
 	from := 0
@@ -359,45 +291,35 @@ func (list *List) Split(position int, interval ...int) {
 	list.Values = append(list.Values[:position], append(elements, list.Values[position+1:]...)...)
 }
 
-/**
- ** Set all elements as uppercase
- **/
+// Upper sets all elements as uppercase.
 func (list *List) Upper() {
 	for i, value := range list.Values {
 		list.Values[i] = strings.ToUpper(value)
 	}
 }
 
-/**
- ** Set all elements as lowercase
- **/
+// Lower sets all elements as lowercase.
 func (list *List) Lower() {
 	for i, value := range list.Values {
 		list.Values[i] = strings.ToLower(value)
 	}
 }
 
-/**
- ** Sort elements. (A to Z)
- **/
+// Sort sorts elements. (A to Z)
 func (list *List) Sort() {
 	var sorter sort.StringSlice = list.Values
 	sorter.Sort()
 	list.Values = sorter[:]
 }
 
-/**
- ** Reverse elements. (Z to A)
- **/
+// Reverse reverses elements. (Z to A)
 func (list *List) Reverse() {
 	var sorter sort.StringSlice = list.Values
 	sort.Sort(sort.Reverse(sorter))
 	list.Values = sorter[:]
 }
 
-/**
- ** Counts the number of occurrences
- **/
+// Count counts the number of occurrences
 func (list *List) Count(element string) (count int) {
 	for _, value := range list.Values {
 		if value == element {
@@ -407,9 +329,7 @@ func (list *List) Count(element string) (count int) {
 	return
 }
 
-/**
- ** Delete duplicate elements in the list.
- **/
+// Dedup deletes duplicated elements in the list.
 func (list *List) Dedup() {
 	for i := list.Len() - 1; i >= 0; i-- {
 		value, _ := list.GetAt(i)
@@ -419,22 +339,27 @@ func (list *List) Dedup() {
 	}
 }
 
-/**
- ** Quote every element in the list.
- **/
+// Quote wraps elements with a given rune.
 func (list *List) Quote(r rune) {
 	for i := range list.Values {
 		list.Values[i] = fmt.Sprintf("%s%s%s", string(r), list.Values[i], string(r))
 	}
 }
 
-/**
- ** Append a new value to the list only if the new element does not exist.
- **/
+// AppendNew appends a new value to the list only if the new element does not exist.
 func (list *List) AppendNew(values ...string) {
 	for _, value := range values {
 		if !list.Exist(value) {
 			list.Values = append(list.Values, value)
+		}
+	}
+}
+
+// Replacer replaces elements with a given map.
+func (list *List) Replacer(fromTo map[string]string) {
+	for i, value := range list.Values {
+		if v, ok := fromTo[value]; ok {
+			list.Values[i] = v
 		}
 	}
 }
