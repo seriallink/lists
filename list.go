@@ -89,6 +89,12 @@ func (list *List) c() bool {
 	return i > 1
 }
 
+// HasNext checks if there are more elements to move forward
+func (list *List) HasNext() bool {
+	i := list.Len() - list.Index
+	return i > 1
+}
+
 // Next returns the next element.
 func (list *List) Next() (string, error) {
 
